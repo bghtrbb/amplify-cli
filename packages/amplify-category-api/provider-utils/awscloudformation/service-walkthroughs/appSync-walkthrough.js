@@ -278,6 +278,10 @@ async function askSecurityQuestions(context, parameters) {
         name: 'Amazon Cognito User Pool',
         value: 'AMAZON_COGNITO_USER_POOLS',
       },
+      {
+        name : 'Amazon IAM',
+        value : 'AMAZON_IAM',
+      }
     ],
   };
 
@@ -304,6 +308,10 @@ async function askSecurityQuestions(context, parameters) {
         'Outputs.UserPoolId',
       ],
     };
+  } else if(authType === 'AMAZON_IAM') {
+	  let authResourceName = checkIfAuthExists(context);
+	  
+	  
   } else if (authType === 'API_KEY') {
     if (parameters.AuthCognitoUserPoolId) {
       delete parameters.AuthCognitoUserPoolId;
