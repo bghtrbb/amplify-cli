@@ -17,7 +17,11 @@ import {
     DEFAULT_OWNER_FIELD,
     DEFAULT_IDENTITY_FIELD,
     GROUPS_AUTH_STRATEGY,
-    DEFAULT_GROUPS_FIELD
+    DEFAULT_GROUPS_FIELD,
+    AUTHENTICATED_AUTH_STRATEGY,
+    UNAUTHENTICATED_AUTH_STRATEGY,
+    AUTH_TYPE_AMAZON_COGNITO_USER_POOL,
+    AUTH_TYPE_AWS_IAM
 } from './constants'
 
 const NONE_VALUE = '___xamznone____'
@@ -132,10 +136,11 @@ export class ResourceFactory {
     }
 
     public updateGraphQLAPIWithAuth(apiRecord: GraphQLAPI) {
+        
         return new GraphQLAPI({
             ...apiRecord.Properties,
             Name: apiRecord.Properties.Name,
-            AuthenticationType: 'AMAZON_COGNITO_USER_POOLS',
+            AuthenticationType: apiRecord.Properties.AuthenticationType,
             UserPoolConfig: new UserPoolConfig({
                 UserPoolId: Fn.If(
                     ResourceConstants.CONDITIONS.AuthShouldCreateUserPool,

@@ -15,7 +15,11 @@ import {
     DEFAULT_OWNER_FIELD,
     DEFAULT_IDENTITY_FIELD,
     GROUPS_AUTH_STRATEGY,
-    DEFAULT_GROUPS_FIELD
+    DEFAULT_GROUPS_FIELD,
+    AUTHENTICATED_AUTH_STRATEGY,
+    UNAUTHENTICATED_AUTH_STRATEGY,
+    AUTH_TYPE_AMAZON_COGNITO_USER_POOL,
+    AUTH_TYPE_AWS_IAM
 } from './constants'
 
 /**
@@ -70,6 +74,7 @@ export class ModelAuthTransformer extends Transformer {
             directive @auth(rules: [AuthRule!]!) on OBJECT
             input AuthRule {
                 allow: AuthStrategy!
+                authType: AuthType!
                 ownerField: String # defaults to "owner"
                 identityField: String # defaults to "cognito:username"
                 groupsField: String
@@ -77,7 +82,8 @@ export class ModelAuthTransformer extends Transformer {
                 queries: [ModelQuery]
                 mutations: [ModelMutation]
             }
-            enum AuthStrategy { owner groups }
+            enum AuthStrategy { owner groups authenticated unauthenticated }
+            enum AuthType { AMAZON_COGNITO_USER_POOL AWS_IAM }
             enum ModelQuery { get list }
             enum ModelMutation { create update delete }
             `
